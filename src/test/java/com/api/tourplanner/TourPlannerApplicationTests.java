@@ -24,13 +24,19 @@ class TourPlannerApplicationTests {
 	}
 
 	@Test
-	void shoouldReturnSingleJourneyInformationBasedOnId() {
+	void shoouldReturnSingleJourneyInformationBasedOnValidId() {
 		ResponseEntity<String> response = testRestTemplate.getForEntity("/journey/detail/1", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		DocumentContext responseContent = JsonPath.parse(response.getBody());
 		Number id = responseContent.read("$.id");
 		assertThat(id).isNotNull();
 		assertThat(id).isEqualTo(1);
+	}
+
+	@Test
+	void shouldNotRetrunJourneyInformationWithInValidId() {
+		ResponseEntity<String> response = testRestTemplate.getForEntity("/journey/detail/99", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 }

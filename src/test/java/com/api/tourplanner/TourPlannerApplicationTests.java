@@ -1,5 +1,6 @@
 package com.api.tourplanner;
 
+import com.api.tourplanner.model.JourneyInformation;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,6 +40,13 @@ class TourPlannerApplicationTests {
 	void shouldNotRetrunJourneyInformationWithInValidId() {
 		ResponseEntity<String> response = testRestTemplate.getForEntity("/journey/detail/99", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	void shouldEnterNewJourneyInformation() {
+		JourneyInformation newEntry = new JourneyInformation(null, "Madurai", LocalDate.of(2023, 12, 12), LocalDate.of(2023, 12,15));
+		ResponseEntity<Void> response = testRestTemplate.postForEntity("/journey/detail/enter", newEntry, Void.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 	}
 
 }

@@ -49,5 +49,28 @@ public class JourneyInformationCreateTest {
 
     }
 
+    @Test
+    void shouldNotCreateNewJourneyInformationWithoutMandatoryField() throws Exception {
+
+        JourneyInformation newEntry = new JourneyInformation(2L, "",null, LocalDate.of(2023, 12,15));
+
+        when(journeyCore.save(newEntry)).thenReturn(newEntry);
+
+        String mockPayload = """
+                {
+                  "id": 2,
+                  "city": "",
+                  "fromDate": "",
+                  "toDate": "2023-12-15"
+                }
+                """;
+
+        mockMvc.perform(post("/journey/detail/enter")
+                        .contentType("application/json")
+                        .content(mockPayload))
+                .andExpect(status().isBadRequest());
+
+    }
+
 
 }

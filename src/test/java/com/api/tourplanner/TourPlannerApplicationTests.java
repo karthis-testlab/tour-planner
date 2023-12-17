@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -47,6 +49,22 @@ class TourPlannerApplicationTests {
 		JourneyInformation newEntry = new JourneyInformation(null, "Madurai", LocalDate.of(2023, 12, 12), LocalDate.of(2023, 12,15));
 		ResponseEntity<Void> response = testRestTemplate.postForEntity("/journey/detail/enter", newEntry, Void.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+	}
+
+	@Test
+	void shouldUpdateExistingJourneyInformation() {
+		JourneyInformation updateEntry = new JourneyInformation(1L, "Vienna", LocalDate.of(2023, 12, 12), LocalDate.of(2023, 12,15));
+		HttpEntity<JourneyInformation> requestPayload = new HttpEntity<>(updateEntry);
+		ResponseEntity<Void> response = testRestTemplate.exchange("/journey/detail/update/1", HttpMethod.PUT, requestPayload, Void.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
+
+	@Test
+	void shouldUpdateExistingJourneyInformationWithInvalidId() {
+		JourneyInformation updateEntry = new JourneyInformation(99L, "Vienna", LocalDate.of(2023, 12, 12), LocalDate.of(2023, 12,15));
+		HttpEntity<JourneyInformation> requestPayload = new HttpEntity<>(updateEntry);
+		ResponseEntity<Void> response = testRestTemplate.exchange("/journey/detail/update/99", HttpMethod.PUT, requestPayload, Void.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 }

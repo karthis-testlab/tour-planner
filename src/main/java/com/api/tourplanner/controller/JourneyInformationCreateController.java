@@ -2,8 +2,8 @@ package com.api.tourplanner.controller;
 
 import com.api.tourplanner.model.JourneyInformation;
 import com.api.tourplanner.repository.JourneyCore;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +18,7 @@ public class JourneyInformationCreateController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/detail/enter")
-    private JourneyInformation createNewJourneyInformation(@RequestBody @Validated JourneyInformation journeyInformation) {
+    private JourneyInformation createNewJourneyInformation(@RequestBody @Valid JourneyInformation journeyInformation) {
         return journeyCore.save(journeyInformation);
     }
 

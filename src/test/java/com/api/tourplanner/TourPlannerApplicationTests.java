@@ -69,7 +69,7 @@ class TourPlannerApplicationTests {
 
 	@Test
 	void shouldDeleteExistingJourneyInformation() {
-		ResponseEntity<Void> response = testRestTemplate.exchange("/journey/detail/delete/1", HttpMethod.DELETE, null, Void.class);
+		ResponseEntity<Void> response = testRestTemplate.exchange("/journey/detail/delete/4", HttpMethod.DELETE, null, Void.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 	}
 

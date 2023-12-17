@@ -33,14 +33,16 @@ public class JourneyInformationCreateTest {
 
         when(journeyCore.save(newEntry)).thenReturn(newEntry);
 
-        String mockPayload = """
+        String mockPayloadSchema = """
                 {
-                  "id": 2,
-                  "city": "Madurai",
-                  "fromDate": "2023-12-12",
-                  "toDate": "2023-12-15"
+                  "id": %d,
+                  "city": "%s",
+                  "fromDate": "%s",
+                  "toDate": "%s"
                 }
                 """;
+
+        String mockPayload = mockPayloadSchema.formatted(newEntry.id(), newEntry.city(), newEntry.fromDate(), newEntry.toDate());
 
         mockMvc.perform(post("/journey/detail/enter")
                 .contentType("application/json")
